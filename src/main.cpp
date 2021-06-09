@@ -10,7 +10,7 @@ Vector2i offset(48,24);
 
 int main()
 {
-    std::cout<<"Muddassir"<<std::endl;
+    std::cout<<"Muddassir1"<<std::endl;
     RenderWindow app(VideoMode(1280,720), "Ludo",sf::Style::Fullscreen);
     app.setFramerateLimit(60);//asdf
     sf::Music music;
