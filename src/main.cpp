@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <time.h>
+#include<iostream>
+
 using namespace sf;
 
 Vector2i offset(48,24);
@@ -8,7 +10,7 @@ Vector2i offset(48,24);
 
 int main()
 {
-
+    std::cout<<"Muddassir"<<std::endl;
     RenderWindow app(VideoMode(1280,720), "Ludo",sf::Style::Fullscreen);
     app.setFramerateLimit(60);//asdf
     sf::Music music;
