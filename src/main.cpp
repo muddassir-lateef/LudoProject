@@ -33,8 +33,8 @@ int main()
             {
 
             }
-          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-          {
+          if (e.type == Event::KeyPressed){
+            if(e.key.code == Keyboard::Escape)
               app.close();
           }  
       }
