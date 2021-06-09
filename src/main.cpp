@@ -10,7 +10,7 @@ Vector2i offset(48,24);
 int main()
 {
     std::cout<<"Hello world by Shayan\n";
-    RenderWindow app(VideoMode(1280,720), "Ludo",sf::Style::Fullscreen);
+    RenderWindow app(VideoMode(1280,720), "Ludo");
     app.setFramerateLimit(60);
     sf::Music music;
     if (!music.openFromFile("audio/mainmenu/strongandstrike.wav"))
