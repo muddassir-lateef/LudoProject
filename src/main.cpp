@@ -17,9 +17,9 @@ int main()
       return -1; // error
     music.play();
     music.setVolume(50);
-    Texture t1;
-    t1.loadFromFile("images/mainmenu/menuboard.jpg");
-    Sprite background(t1);
+    Texture bg;
+    bg.loadFromFile("images/background/board.png");
+    Sprite background(bg);
     while (app.isOpen())
     {
       Event e;
