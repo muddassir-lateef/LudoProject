@@ -33,6 +33,10 @@ int main()
             {
 
             }
+          if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+          {
+              app.close();
+          }  
       }
 
       app.draw(background);
