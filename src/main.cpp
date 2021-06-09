@@ -10,7 +10,7 @@ int main()
 {
 
     RenderWindow app(VideoMode(1280,720), "Ludo",sf::Style::Fullscreen);
-    app.setFramerateLimit(60);
+    app.setFramerateLimit(60);//asdf
     sf::Music music;
     if (!music.openFromFile("audio/mainmenu/strongandstrike.wav"))
       return -1; // error
