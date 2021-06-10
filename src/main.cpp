@@ -6,7 +6,12 @@ using namespace sf;
 
 Vector2i offset(48,24);
 
+void rocket()
+{
 
+  char x='r';
+
+}
 int main()
 {
     std::cout<<"Muddassir2 merger setting"<<std::endl;
