@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <time.h>
 #include<iostream>
+
 using namespace sf;
 
 Vector2i offset(48,24);
@@ -9,6 +10,7 @@ Vector2i offset(48,24);
 
 int main()
 {
+    std::cout<<"Changes in Dice roll\n";
     std::cout<<"Hello world by Shayan\n";
     RenderWindow app(VideoMode(1280,720), "Ludo");
     app.setFramerateLimit(60);
