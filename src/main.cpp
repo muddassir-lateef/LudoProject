@@ -9,6 +9,7 @@ Vector2i offset(48,24);
 
 int main()
 {
+    std::cout<<"Muddassir2 merger setting"<<std::endl;
     std::cout<<"Muddassir2 main setting"<<std::endl;
     std::cout<<"Muddassir1 from meld"<<std::endl;
     std::cout<<"Hello world by Shayan\n";
