@@ -8,7 +8,7 @@ Vector2i offset(48,24);
 
 void racoon()
 {
-  char ='rac';
+  char ='c';
 }
 int main()
 {
