@@ -22,16 +22,16 @@ int main()
     std::cout<<"Muddassir2 main setting"<<std::endl;
     std::cout<<"Muddassir1 from meld"<<std::endl;
     std::cout<<"Hello world by Shayan\n";
-    RenderWindow app(VideoMode(1280,720), "Ludo",sf::Style::Fullscreen);
-    app.setFramerateLimit(60);//asdf
+    RenderWindow app(VideoMode(1280,720), "Ludo");
+    app.setFramerateLimit(60);
     sf::Music music;
     if (!music.openFromFile("audio/mainmenu/strongandstrike.wav"))
       return -1; // error
     music.play();
     music.setVolume(50);
-    Texture t1;
-    t1.loadFromFile("images/mainmenu/menuboard.jpg");
-    Sprite background(t1);
+    Texture bg;
+    bg.loadFromFile("images/background/board.png");
+    Sprite background(bg);
     while (app.isOpen())
     {
       Event e;
@@ -45,6 +45,10 @@ int main()
             {
 
             }
+          if (e.type == Event::KeyPressed){
+            if(e.key.code == Keyboard::Escape)
+              app.close();
+          }  
       }
 
       app.draw(background);
