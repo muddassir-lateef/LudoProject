@@ -12,6 +12,10 @@ void rocket()
   char x='r';
 
 }
+void racoon()
+{
+  char c='c';
+}
 int main()
 {
     std::cout<<"Muddassir2 merger setting"<<std::endl;
