@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <time.h>
-#include<iostream>
+#include <iostream>
 #include <ctime>
-#include<unistd.h>
+#include <unistd.h>
 #include "dice.h"
 using namespace sf;
 using namespace std;

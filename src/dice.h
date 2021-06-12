@@ -10,7 +10,6 @@ class dice{
     int x;
     int y;
     Sprite Dice;
-    sf::SoundBuffer sound;
     int opacity;
     bool rolling;
     int face=6;
@@ -33,7 +32,7 @@ dice::dice(int x, int y){
     opacity = 255;
     Dice.setPosition(this->x,this->y);
     rolling = false;
-    sound.loadFromFile("audio/Dice_Roll/dice_roll.wav");;
+    //sound.loadFromFile("audio/Dice_Roll/sample.wav");
 }
 
 dice::dice(int x, int y, Texture& texture){
@@ -43,7 +42,7 @@ dice::dice(int x, int y, Texture& texture){
     rolling = false;
     Dice.setPosition(this->x,this->y);
     Dice.setTexture(texture);
-    sound.loadFromFile("audio/Dice_Roll/dice_roll.wav");
+    
 }
 
 bool dice::isRolling(){
@@ -76,10 +75,6 @@ void dice::drawDice(int faceValue, RenderWindow& app){  //only for drawing dice 
 
 vector<int> dice::roll_Dice(int type, RenderWindow& app){
   rolling = true;
-  Sound rolling_sound;
-  rolling_sound.setBuffer(sound);
-  rolling_sound.setVolume(100);
-  rolling_sound.play();
   srand(time(0)); //seeding
   vector<int> roll_values;  //return list 
   int value = (rand()%6)+1;
@@ -92,8 +87,6 @@ vector<int> dice::roll_Dice(int type, RenderWindow& app){
 
 void dice::animate_roll(int result, RenderWindow& app){
   if (rolling == true){ 
-    Clock clock;
-    clock.restart();
     opacity -= 10;
     Dice.setColor(Color(255,255,255,opacity));
    // Dice.setScale(1.01f,1.01f);
