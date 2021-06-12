@@ -16,7 +16,7 @@ int main()
     sf::Music music;
     if (!music.openFromFile("audio/mainmenu/strongandstrike.wav"))
       return -1; // error
-    //music.play();
+    music.play();
     music.setVolume(20);
     Texture bg;
     bg.loadFromFile("images/background/board.png");
@@ -36,12 +36,14 @@ int main()
           if (e.type == Event::MouseButtonPressed)
             if (e.key.code == Mouse::Left)
             {
-              Dice.roll_Dice(123,app);
+          
             }
           if (e.type == Event::KeyPressed){
             if(e.key.code == Keyboard::Escape)
               app.close();
-          }  
+            if (e.key.code == Keyboard::Space)
+              Dice.roll_Dice(123,app);
+          }
       }
       if (Dice.isRolling()) x = (rand()%6)+1; //give a new x to display
       Dice.animate_roll(x,app);

@@ -10,7 +10,7 @@ class dice{
     int x;
     int y;
     Sprite Dice;
-    SoundBuffer sound;
+    sf::SoundBuffer sound;
     int opacity;
     bool rolling;
     int face=6;
@@ -66,7 +66,7 @@ void dice::setTexture(Texture& texture){
 }
 
 void dice::drawDice(int faceValue, RenderWindow& app){  //only for drawing dice of any face Value at given coordinates
-  
+  Dice.setPosition(x,y);
   if (!rolling) faceValue = face;
   if (faceValue < 0 || faceValue > 6) return;
   IntRect obj((faceValue-1)*50,0,50,50);
@@ -96,11 +96,11 @@ void dice::animate_roll(int result, RenderWindow& app){
     clock.restart();
     opacity -= 10;
     Dice.setColor(Color(255,255,255,opacity));
-    Dice.setScale(1.01f,1.01f);
+   // Dice.setScale(1.01f,1.01f);
     if (opacity < 0){
         rolling = false;
         opacity = 255;
-        Dice.setScale(1.00f,1.00f);
+       // Dice.setScale(1.00f,1.00f);
         this->drawDice(face,app);
     }
   }
