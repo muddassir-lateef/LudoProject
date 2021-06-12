@@ -16,7 +16,7 @@ int main()
     sf::Music music;
     if (!music.openFromFile("audio/mainmenu/strongandstrike.wav"))
       return -1; // error
-    music.play();
+    //music.play();
     music.setVolume(20);
     Texture bg;
     bg.loadFromFile("images/background/board.png");
