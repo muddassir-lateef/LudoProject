@@ -5,7 +5,8 @@
 #include <ctime>
 #include <unistd.h>
 #include "dice.h"
-#include "logging/logging.h"
+#include "../logging/logging.h"
+
 using namespace sf;
 using namespace std;
 int x=1;
