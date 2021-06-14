@@ -14,12 +14,12 @@ class Board
     Token tokensprites[4];
     string grid[15][15]={
           "#","#","#","#","#","#","_","_","_","#","#","#","#","#","#",
-         "#","#","#3","#","#","#","_","-","*1234","#","#","#2","#","#","#",
+         "#","#","#3","#","#","#","_","-","*2","#","#","#2","#","#","#",
         "#","#3","#","#3","#","#","_","-","_","#","#2","#","#2","#","#",
-         "#","#","#3","#","#","#","_","-","_","#","#","#2","#","#","#",
-          "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
-          "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
-          "_","*3","_","_","_","_","&","&","&","_","_","_","_","_","_",
+         "#","#","#3","#","#","#","_","-","_1","#","#","#2","#","#","#",
+          "#","#","#","#","#","#","_","-","_1","#","#","#","#","#","#",
+          "#","#","#","#","#","#","_","-","_1","#","#","#","#","#","#",
+          "_","*3","_","_","_","_","&","&","&","_1","_","_","_","_","_",
           "_","-","-","-","-","-","&","&","&","-","-","-","-","-","_",
           "_","_","_","_","_","_","&","&","&","_","_","_","_","*11","_",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
@@ -52,6 +52,40 @@ public:
         tokensprites[2].initToken(&t[2],app);
         tokensprites[3].initToken(&t[3],app);
 
+    }
+    int hit()
+    {
+        for(int i=0;i<15;i++)
+        {
+            for(int j=0;j<15;j++)
+            {
+                int gl=grid[i][j].length();
+                if(gl>2)
+                {
+                    int prev=0;
+                    for(int k=0;k<gl;k++)
+                    {
+                        int gc=grid[i][j][k];
+                        if(gc=='1' || gc=='2' || gc=='3' || gc=='4')
+                        {
+                            if(prev==0)
+                            {
+                                prev=gc-48;
+                            }
+                            else if(prev!=gc-48)
+                            {
+                                string temp=grid[i][j];
+                                grid[i][j]=strremove(prev+48,temp);
+                                this->hits[gc-48]++;
+                                cout<<prev<<"was hit!"<<endl;
+                                //prev(int) got hit!
+                            }
+                        }
+                    }   
+                }                
+            }
+
+        }
     }
     void draw()
     {
@@ -98,134 +132,187 @@ public:
         this->y=yi;
         board->setPosition(xi, yi);
     }
-    void move(int p,int i,int j,int steps)
+    int* selectgrid(int x,int y)
     {
-        for(int k=0;k<steps;k++)
+        int xs=0;
+        int xe=0;
+        int ys=0;
+        int ye=0;
+
+        for(int i=0;i<15;i++)
         {
-            this->draw();
-            if(!((i==6 && j==7)||(i==7 && j==6)||(i==7 && j==8)||(i==8 && j==7)))
+            for(int j=0;j<15;j++)
             {
-                string temp=grid[i][j];
-                grid[i][j]=strremove(p+48,temp);
-                int h=0;
-                int v=0;
-                //i is the y axis from top to bottom
-                //j is the x axis from left to right
-                if(j==6)
+                int xoff=96;
+                int yoff=75;
+                int off=45;
+                xs=xoff+this->x+j*off;
+                xe=xoff+this->x+(j+1)*off;
+                ys=yoff+this->y+i*off;
+                ye=yoff+this->y+(i+1)*off;
+           //     cout<<"x:"<<x<<" y:"<<y<<endl;
+             //   cout<<"xs:"<<xs<<" xe:"<<xe<<endl;
+               // cout<<"ys:"<<ys<<" ye:"<<ye<<endl;
+                 //   cout<<"i:"<<i<<"  j:"<<j<<endl;
+
+                if(x<=xe &&x>=xs && y<=ye &&y>=ys)
                 {
-                    if(i==0)
+                 //   cout<<"ffi:"<<i<<"  ffj:"<<j<<endl;
+
+                    int * corr=new int[2];
+                    corr[0]=i;
+                    corr[1]=j;
+                    if(corr[0]>14 || corr[1]>14)
                     {
-                        h=1;
+                        return NULL;
                     }
-                    else if (i==9)
-                    {
-                        v=1;
-                        h=-1;
-                    }
-                    else
-                    {
-                        v=1;
-                    }
+                    return corr;
+
                 }
-                else if(j==7)
+
+            }
+        }
+        return NULL;
+
+    }
+    bool move(int p,int i,int j,int steps)
+    {
+        if(grid[i][j].find(char(p+48),0)!= String::InvalidPos &&(grid[i][j][0]=='_' || grid[i][j][0]=='*' ||grid[i][j][0]=='-'))
+        {
+            for(int k=0;k<steps;k++)
+            {
+                //this->draw();
+               // cout<<"fidning "<<p<<" from "<<grid[i][j]<<endl;
+                if(!((i==6 && j==7)||(i==7 && j==6)||(i==7 && j==8)||(i==8 && j==7)))
                 {
-                    if(i>-1 && i<6 && p==2 && hits[p-1]>0)
-                    {
-                        v=-1;
-                    }
-                    else if(i>8 && i<15 && p==4 && hits[p-1]>0)
-                    {
-                        v=1;
-                    }
-                    else
+                 //   cout<<"inside"<<endl;
+                    string temp=grid[i][j];
+                    grid[i][j]=strremove(p+48,temp);
+                    int h=0;
+                    int v=0;
+                    //i is the y axis from top to bottom
+                    //j is the x axis from left to right
+                    if(j==6)
                     {
                         if(i==0)
                         {
                             h=1;
                         }
-                        else if(i==14)
+                        else if (i==9)
+                        {
+                            v=1;
+                            h=-1;
+                        }
+                        else
+                        {
+                            v=1;
+                        }
+                    }
+                    else if(j==7)
+                    {
+                        if(i>-1 && i<6 && p==2 && hits[p-1]>0)
+                        {
+                            v=-1;
+                        }
+                        else if(i>8 && i<15 && p==4 && hits[p-1]>0)
+                        {
+                            v=1;
+                        }
+                        else
+                        {
+                            if(i==0)
+                            {
+                                h=1;
+                            }
+                            else if(i==14)
+                            {
+                                h=-1;
+                            }
+
+                        }
+                    }
+                    else if(j==8)
+                    {
+                        if(i==14)
                         {
                             h=-1;
                         }
+                        else if (i==5)
+                        {
+                            h=1;
+                            v=-1;
+                        }
+                        else
+                        {
+                            v=-1;
+                        }
+                    }
+                    if(i==6)
+                    {
+                        if(j==14)
+                        {
+                            v=-1;
+                        }
+                        else if (j==5)
+                        {
+                            v=1;
+                            h=1;
+                        }
+                        else
+                        {
+                            h=1;
+                        }
+                    }
+                    else if(i==7)
+                    {
+                        if(j>-1 && j<6 && p==3 && hits[p-1]>0)
+                        {
+                            h=1;
+                        }
+                        else if(j>8 && j<15 && p==1 && hits[p-1]>0)
+                        {
+                            h=-1;
+                        }
+                        else
+                        {
+                            if(j==0)
+                            {
+                                v=1;
+                            }
+                            else if(j==14)
+                            {
+                                v=-1;
+                            }
 
+                        }
                     }
-                }
-                else if(j==8)
-                {
-                    if(i==14)
-                    {
-                        h=-1;
-                    }
-                    else if (i==5)
-                    {
-                        h=1;
-                        v=-1;
-                    }
-                    else
-                    {
-                        v=-1;
-                    }
-                }
-                if(i==6)
-                {
-                    if(j==14)
-                    {
-                        v=-1;
-                    }
-                    else if (j==5)
-                    {
-                        v=1;
-                        h=1;
-                    }
-                    else
-                    {
-                        h=1;
-                    }
-                }
-                else if(i==7)
-                {
-                    if(j>-1 && j<6 && p==3 && hits[p-1]>0)
-                    {
-                        h=1;
-                    }
-                    else if(j>8 && j<15 && p==1 && hits[p-1]>0)
-                    {
-                        h=-1;
-                    }
-                    else
+                    else if(i==8)
                     {
                         if(j==0)
                         {
                             v=1;
                         }
-                        else if(j==14)
+                        else if (j==9)
                         {
+                            h=-1;
                             v=-1;
                         }
-
+                        else
+                        {
+                            h=-1;
+                        }
                     }
+                    grid[i-v][j+h]+=char(p+48);
+                    i=i-v;
+                    j=j+h;
                 }
-                else if(i==8)
-                {
-                    if(j==0)
-                    {
-                        v=1;
-                    }
-                    else if (j==9)
-                    {
-                        h=-1;
-                        v=-1;
-                    }
-                    else
-                    {
-                        h=-1;
-                    }
-                }
-                grid[i-v][j+h]+=char(p+48);
-                i=i-v;
-                j=j+h;
-
             }
+          //  cout<<"moved"<<endl;
+            return true;
+        }
+        else
+        {
+            return false;
         }
 
     }
