@@ -5,7 +5,7 @@
 # Compiler settings - Can be customized.
 CC = g++
 CXXFLAGS = -std=c++11 -Wall -g
-LDFLAGS = -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
+LDFLAGS = -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -lpthread
 
 # Makefile settings - Can be customized.
 APPNAME = ludo
