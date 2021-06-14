@@ -50,7 +50,6 @@ int main()
       if (Dice.isRolling()) x = (rand()%6)+1; //give a new x to display
       Dice.animate_roll(x,app);
       Dice.drawDice(x,app);
-      app.draw(background);
       app.display();
     }
     return 0;
