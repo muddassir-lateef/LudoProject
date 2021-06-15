@@ -135,6 +135,7 @@ void dice::clear_players(){
      player[i].clear();
 
     }
+    right_tok.clearDie();
 
 }
 vector<int> dice::complete_roll(int p, RenderWindow& app){
@@ -166,7 +167,7 @@ vector<int> dice::complete_roll(int p, RenderWindow& app){
     }
     if (! (value == 6 && wasted[p-1]==0) ){    // ! (value is 6 and player is not wasted)
         allplayed[p-1] = 1;
-        right_tok.clearDie();
+        //right_tok.clearDie();
     }
     //right_tok.clearDie();
     return player[p-1];

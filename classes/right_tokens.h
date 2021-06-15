@@ -45,10 +45,10 @@ right_tokens::right_tokens(int x, int y){
     token_sprite.setTexture(tokens);
     this->x = x;
     this->y = y;
-    tok_y[0]=y+210;
-    tok_y[1]=y+140;
-    tok_y[2]=y+70;
-    tok_y[3]=y+0;
+    tok_y[0]=y+0;
+    tok_y[1]=y+70;
+    tok_y[2]=y+140;
+    tok_y[3]=y+210;
     tok_rects[0] = IntRect(0,0,60,50);
     tok_rects[1] = IntRect(0,50,60,50);
     tok_rects[2] = IntRect(60,0,60,50);
@@ -63,10 +63,10 @@ right_tokens::right_tokens(int x, int y, int x2, int y2){
     this->y = y;
     this->x_die = x2;
     this->y_die = y2;
-    tok_y[0]=y+210;
-    tok_y[1]=y+140;
-    tok_y[2]=y+70;
-    tok_y[3]=y+0;
+    tok_y[0]=y+0;
+    tok_y[1]=y+70;
+    tok_y[2]=y+140;
+    tok_y[3]=y+210;
     tok_rects[0] = IntRect(0,0,60,50);
     tok_rects[1] = IntRect(0,50,60,50);
     tok_rects[2] = IntRect(60,0,60,50);
@@ -89,13 +89,13 @@ void right_tokens::drawSmallDice(int result, RenderWindow& app){  //only for dra
   newDie.setScale(0.5f,0.5f);
   dice.push_back(newDie);
 
-  for (int i=0; i<dice.size() && i<3; i++){
+  for (int i=0; i<dice.size(); i++){
     app.draw(dice[i]);
   }
 }
 
 void right_tokens::drawSmallDice(RenderWindow& app){  //only for drawing dice of any face Value at given coordinates
-  for (int i=0; i<dice.size() && i<3; i++){
+  for (int i=0; i<dice.size(); i++){
     app.draw(dice[i]);
   }
 }
@@ -109,10 +109,10 @@ void right_tokens::set_all(int x, int y, int x2, int y2){
     this->y = y;
     this->x_die = x2;
     this->y_die = y2;
-    tok_y[0]=y+210;
-    tok_y[1]=y+140;
-    tok_y[2]=y+70;
-    tok_y[3]=y+0;
+    tok_y[0]=y+0;
+    tok_y[1]=y+70;
+    tok_y[2]=y+140;
+    tok_y[3]=y+210;
 }
 
 void right_tokens::setDicePosition(int player){

@@ -12,7 +12,16 @@ using namespace sf;
 using namespace std;
 int x=1;
 int turn=1;
+void status(int, RenderWindow& app);
 
+void play_kill(){
+  SoundBuffer buffer;
+  buffer.loadFromFile("audio/Kill/kill.wav");
+  Sound sound;
+  sound.setBuffer(buffer);
+  sound.setVolume(100);
+  sound.play();
+}
 
 int main()
 {
@@ -60,7 +69,7 @@ int main()
                    
           if (e.type == Event::MouseButtonPressed)
             if (e.key.code == Mouse::Left)
-            {
+            { 
                 std::cout<<"x:"<<Mouse::getPosition().x<<" "<<"y:"<<Mouse::getPosition().y<<std::endl;
             }
           if (e.type == Event::KeyPressed)
@@ -69,7 +78,7 @@ int main()
             }
             if (e.key.code == Keyboard::Space){
               if(Dice.endturn(1))
-              { 
+              { play_kill();
                   //if wasted
                   if (Dice.turn_wasted(1)){  //checking for player 1
                     cout<<"Player turn was wasted\n";
@@ -92,8 +101,25 @@ int main()
       Dice.animate_roll(x,app);
       Dice.drawDice(x,app);
       board.draw();
+      status(4,app);
       app.display();
     }
   
     return 0;
 }
+
+void status(int player, RenderWindow& app){
+  Sprite token;
+  Texture token_texture;
+  token_texture.loadFromFile("images/tokens/token_sheet.png");
+  token.setTexture(token_texture);
+  IntRect tok_rects[4];
+  tok_rects[0] = IntRect(0,0,60,50);
+  tok_rects[1] = IntRect(0,50,60,50);
+  tok_rects[2] = IntRect(60,0,60,50);
+  tok_rects[3] = IntRect(60,50,60,50);
+  token.setTextureRect(tok_rects[player-1]);
+  token.setPosition(800,600);
+  app.draw(token);
+}
+
