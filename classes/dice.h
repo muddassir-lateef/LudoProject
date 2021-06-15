@@ -91,7 +91,7 @@ int dice::roll_Dice(int type, RenderWindow& app){
   rolling = true;
   srand(time(0)); //seeding
   //vector<int> roll_values;  //return list 
-  int value = 6;//(rand()%6)+1; //value=6;
+  int value = (rand()%6)+1; //value=6;
   //cout<<value<<endl;
   face = value;
   //roll_values.push_back(value); //adding to the list of generated values
