@@ -11,6 +11,7 @@
 using namespace sf;
 using namespace std;
 int x=1;
+int turn=1;
 
 
 int main()
@@ -46,6 +47,7 @@ int main()
       Event e;
       while (app.pollEvent(e))
       {
+
           if (e.type == Event::Closed)
             app.close();
                    
@@ -55,22 +57,33 @@ int main()
                 std::cout<<"x:"<<Mouse::getPosition().x<<" "<<"y:"<<Mouse::getPosition().y<<std::endl;
             }
           if (e.type == Event::KeyPressed)
-          {
-            if(e.key.code == Keyboard::Escape)
-              app.close();
-            if (e.key.code == Keyboard::Space)
-              Dice.roll_Dice(123,app);
-            if(e.key.code == Keyboard::F)
-            {
-              nx++;
-              board.move(1,8,13,17);
-            //  board.move(2,1,8,nx);
-              //board.move(3,6,1,nx);
-             // board.move(4,13,6,nx);
-
+          { if (e.key.code == Keyboard::Escape){
+             app.close();
             }
+            if (e.key.code == Keyboard::Space){
+              if(Dice.endturn(1))
+              { 
+                  //if wasted
+                  if (Dice.turn_wasted(1)){  //checking for player 1
+                    cout<<"Player turn was wasted\n";
+                  }
+                  //return NULL
+                  //else 
+                      //return vector
+                      //post
+                  
+              }
+              else
+              {
+                  vector<int> roll = Dice.complete_roll(1,app); 
+                  for (int i=0; i<roll.size(); i++){cout<<roll[i]<<" ";}
+                  cout<<endl;
 
+              }
+            }  
           }
+
+        
       }
       if (Dice.isRolling()) {x = (rand()%6)+1;} //give a new x to display
       Dice.animate_roll(x,app);
@@ -78,5 +91,6 @@ int main()
       board.draw();
       app.display();
     }
+  
     return 0;
 }
