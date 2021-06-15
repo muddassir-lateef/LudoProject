@@ -25,9 +25,9 @@ right_tokens::right_tokens(int x, int y){
     this->x = x;
     this->y = y;
     tok_y[0]=y;
-    tok_y[1]=y+50;
-    tok_y[2]=y+100;
-    tok_y[3]=y+150;
+    tok_y[1]=y+70;
+    tok_y[2]=y+140;
+    tok_y[3]=y+210;
     tok_rects[0] = IntRect(0,0,60,50);
     tok_rects[1] = IntRect(0,50,60,50);
     tok_rects[2] = IntRect(60,0,60,50);

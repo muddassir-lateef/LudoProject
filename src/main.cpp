@@ -28,7 +28,7 @@ int main()
     music.play();
     music.setVolume(10);
 
-    right_tokens right_tok(700,20);
+    right_tokens right_tok(700,25);
     
     // Loading textures
     Texture t[5];
