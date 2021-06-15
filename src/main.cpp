@@ -67,11 +67,6 @@ int main()
                   if (Dice.turn_wasted(1)){  //checking for player 1
                     cout<<"Player turn was wasted\n";
                   }
-                  //return NULL
-                  //else 
-                      //return vector
-                      //post
-                  
               }
               else
               {

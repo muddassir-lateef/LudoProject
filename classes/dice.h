@@ -126,17 +126,12 @@ void dice::clear_players(){
     for(int i=0;i<4;i++){
      allplayed[i]=0;
      wasted[i]=0;
-    player[i].clear();
+     player[i].clear();
 
     }
 
 }
 vector<int> dice::complete_roll(int p, RenderWindow& app){
-  /*  if(player == player_turn){
-        vector<int> empty;
-        return empty;
-    } //must be a new player's turn
-*/
     int value = roll_Dice(p,app);
     vector<int> temp;
     
