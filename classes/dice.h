@@ -3,6 +3,7 @@
 #include <time.h>
 #include <vector>
 #include <iostream>
+#include"../classes/right_tokens.h"
 using namespace sf;
 using namespace std;
 
@@ -17,6 +18,7 @@ class dice{
     bool rolling;
     int face=6;
     int random = 6;  //random variable 
+    right_tokens right_tok;
     vector<int> player[4];
 public:
     dice(int x, int y);
@@ -44,6 +46,7 @@ dice::dice(int x, int y){
     rolling = false;
     int player_turn = 1;
     //sound.loadFromFile("audio/Dice_Roll/sample.wav");
+    right_tok.set_all(700,230,750,625);
 }
 
 dice::dice(int x, int y, Texture& texture){
@@ -54,6 +57,7 @@ dice::dice(int x, int y, Texture& texture){
     Dice.setPosition(this->x,this->y);
     Dice.setTexture(texture);  
     int player_turn = 1; 
+    right_tok.set_all(700,230,750,625);
 }
 
 bool dice::isRolling(){
@@ -84,6 +88,8 @@ void dice::drawDice(int faceValue, RenderWindow& app){  //only for drawing dice 
   if (faceValue < 0 || faceValue > 6) return;
   IntRect obj((faceValue-1)*50,0,50,50);
   Dice.setTextureRect(obj);
+  right_tok.drawTokens(app);
+  right_tok.drawSmallDice(app);
   app.draw(Dice);
 }
 
@@ -134,28 +140,34 @@ void dice::clear_players(){
 vector<int> dice::complete_roll(int p, RenderWindow& app){
     int value = roll_Dice(p,app);
     vector<int> temp;
-    
+    right_tok.setDicePosition(p);
     if (value == 6){
         if(player[p-1].size() == 0 ){
             player[p-1].push_back(value);
+            right_tok.drawSmallDice(value, app);
         }
         else{
             if (player[p-1].size() == 2){
                 player[p-1].clear();
                 wasted[p-1] = 1;
+                right_tok.drawSmallDice(value, app);
             }
             else{
                 player[p-1].push_back(value);
+                right_tok.drawSmallDice(value, app);
             }
         }
     }
     else
     {
         player[p-1].push_back(value);
+        right_tok.drawSmallDice(value, app);
 
     }
     if (! (value == 6 && wasted[p-1]==0) ){    // ! (value is 6 and player is not wasted)
         allplayed[p-1] = 1;
+        right_tok.clearDie();
     }
+    //right_tok.clearDie();
     return player[p-1];
 }

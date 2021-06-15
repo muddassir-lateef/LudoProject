@@ -7,7 +7,6 @@
 #include "../classes/logging.h"
 #include"../classes/Board.h"
 #include"../classes/Token.h"
-#include"../classes/right_tokens.h"
 
 using namespace sf;
 using namespace std;
@@ -27,8 +26,12 @@ int main()
     dice Dice(750,600,dice_texture);
     music.play();
     music.setVolume(10);
-
-    right_tokens right_tok(700,25);
+    Texture right_bg;
+    right_bg.loadFromFile("images/background/right_bg.jpg");
+    Sprite right_background;
+    right_background.setTexture(right_bg);
+    right_background.setPosition(700,22);
+    right_background.setScale(1.7f,2.0f);
     
     // Loading textures
     Texture t[5];
@@ -85,9 +88,9 @@ int main()
         
       }
       if (Dice.isRolling()) {x = (rand()%6)+1;} //give a new x to display
+      app.draw(right_background);
       Dice.animate_roll(x,app);
       Dice.drawDice(x,app);
-      right_tok.draw(app);
       board.draw();
       app.display();
     }
