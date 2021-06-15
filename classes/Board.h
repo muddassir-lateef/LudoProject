@@ -9,28 +9,31 @@ class Board
     int x;
     int y;
     sf::Sprite* board;
+    sf::Sprite* border;
     sf::RenderWindow* app;
-    int hits[4]={0,1,1,1};
+    int hits[4]={0,0,0,0};
     Token tokensprites[4];
     string grid[15][15]={
           "#","#","#","#","#","#","_","_","_","#","#","#","#","#","#",
-         "#","#","#3","#","#","#","_","-","*2","#","#","#2","#","#","#",
+         "#","#","#3","#","#","#","_","-","*","#","#","#2","#","#","#",
         "#","#3","#","#3","#","#","_","-","_","#","#2","#","#2","#","#",
-         "#","#","#3","#","#","#","_","-","_1","#","#","#2","#","#","#",
-          "#","#","#","#","#","#","_","-","_1","#","#","#","#","#","#",
-          "#","#","#","#","#","#","_","-","_1","#","#","#","#","#","#",
-          "_","*3","_","_","_","_","&","&","&","_1","_","_","_","_","_",
+         "#","#","#3","#","#","#","_","-","_","#","#","#2","#","#","#",
+          "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
+          "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
+         "_","*","_","_","_","_","&","&","&","_","_","_","_","_","_",
           "_","-","-","-","-","-","&","&","&","-","-","-","-","-","_",
-          "_","_","_","_","_","_","&","&","&","_","_","_","_","*11","_",
+          "_","_","_","_","_","_","&","&","&","_","_","_","_","*","_",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
          "#","#","#4","#","#","#","_","-","_","#","#","#1","#","#","#",
-        "#","#4","#","#4","#","#","_","-","_","#","#1","#","#","#","#",
-         "#","#","#4","#","#","#","*4","-","_","#","#","#1","#","#","#",
+        "#","#4","#","#4","#","#","_","-","_","#","#1","#","#1","#","#",
+         "#","#","#4","#","#","#","*","-","_","#","#","#1","#","#","#",
           "#","#","#","#","#","#","_","_","_","#","#","#","#","#","#"
 
     };
 public:
+    bool egrid[15][15];
+
     Board()
     {
         x=0;
@@ -38,12 +41,97 @@ public:
         board=NULL;
         app=NULL;
     }
-    Board(int x,int y,sf::Sprite* board,sf::RenderWindow* rw)    
+    void clearw()
     {
+        for(int i=0;i<15;i++)
+        {
+            for(int j=0;j<15;j++)
+            {
+                egrid[i][j]=false;
+            }
+
+        }
+
+    }
+    Board(int x,int y,sf::Sprite* board,sf::Sprite* bord,sf::RenderWindow* rw)    
+    {
+        clearw();
         this->board=board;
         this->set(x,y);
         app=rw;
+        border=bord;
      
+    }
+    void trace(int p,int i,int j,int steps)
+    {
+
+        int* arr=predict(p,i,j,steps);
+        if(arr!=NULL)
+        {
+
+            egrid[arr[1]][arr[2]]=true;
+        }
+        
+    }
+    bool addtoken(int player,int check=0)
+    {
+    //    cout<<"checking tokens of"<<player<<endl;
+        int closedtokens[4][4][2]={11,11,12,10,13,11,12,12,1,11,2,10,3,11,2,12,1,2,2,1,3,2,2,3,12,1,13,2,11,2,12,3};
+        for(int k=0;k<4;k++)
+        {
+            int i=closedtokens[player-1][k][0];
+            int j=closedtokens[player-1][k][1];
+//            cout<<"checking i:"<<i<<"j:"<<j<<endl;
+            if(grid[i][j].length()==1)
+            {
+                if(check==0)
+                grid[i][j]+=char(player+48);
+  //                      cout<<"truee!!"<<endl;
+
+                return true;
+
+            }
+        }
+     //   cout<<"false!!"<<endl;
+        return false;
+    }
+    int won()
+    {
+        int win[4][2]={7,8,6,7,7,6,8,7};
+        for(int i=0;i<4;i++)
+        {
+            if(grid[win[i][0]][win[i][1]].length()>4)
+            {
+                return grid[win[i][0]][win[i][1]][1]-48;
+            }
+        }
+        return 0;
+    }    
+    bool opentoken(int player)
+    {
+        int starting[4][2]={8,13,1,8,6,1,13,6};
+        int closedtokens[4][4][2]={11,11,12,10,13,11,12,12,1,11,2,10,3,11,2,12,1,2,2,1,3,2,2,3,12,1,13,2,11,2,12,3};
+        for(int k=0;k<4;k++)
+        {   
+            int i=closedtokens[player-1][k][0];
+            int j=closedtokens[player-1][k][1];
+        //    cout<<"for k:"<<k<<" i:"<<i<<" j:"<<j<<endl;
+            if (grid[i][j].length()>1)
+            {
+                
+                //cout<<"in to remove from i:"<<i<<" j:"<<j<<endl;
+                string temp=grid[i][j];
+                grid[i][j]=strremove(player+48,temp);
+                i=starting[player-1][0];
+                j=starting[player-1][1];
+               // cout<<"placed to i:"<<i<<" j:"<<j<<endl;
+
+                grid[i][j]+=char(player+48);
+                return true;
+            }
+        }
+        return false;
+
     }
     void initTokens(sf::Sprite* t)
     {
@@ -51,16 +139,64 @@ public:
         tokensprites[1].initToken(&t[1],app);
         tokensprites[2].initToken(&t[2],app);
         tokensprites[3].initToken(&t[3],app);
-
     }
-    int hit()
+    int* predict(int p,int i,int j,int steps)
+    {
+        string tgrid[15][15];
+        for(int x1=0;x1<15;x1++)
+        {
+            for(int x2=0;x2<15;x2++)
+            {
+                tgrid[x1][x2]=grid[x1][x2];
+                
+            }
+        }
+        int* arr=new int[3];
+        arr[0]=-1;
+        arr[1]=-1;
+        arr[2]=-1;
+
+        int* mv=move(p,i,j,steps);
+        if(mv!=NULL)
+        {
+          //  cout<<"mov sent "<<mv[0]<<" "<<mv[1]<<" "<<mv[2]<<" "<<endl;
+            if(mv[0]==0)
+            {
+                arr[0]=hit(1);
+                hits[p-1]--;
+                arr[1]=mv[1];
+                arr[2]=mv[2];
+            }
+            else
+            {
+                arr=NULL;
+            }
+
+        }
+        else
+        {
+          //  cout<<"can never be moved"<<endl;
+            arr=NULL;
+        }
+        for(int x1=0;x1<15;x1++)
+        {
+            for(int x2=0;x2<15;x2++)
+            {
+                grid[x1][x2]=tgrid[x1][x2];
+                
+            }
+        }
+        return arr;
+        
+    }
+    int hit(int cntrl=0)
     {
         for(int i=0;i<15;i++)
         {
             for(int j=0;j<15;j++)
             {
                 int gl=grid[i][j].length();
-                if(gl>2)
+                if(gl>2 && grid[i][j][0]!='*')
                 {
                     int prev=0;
                     for(int k=0;k<gl;k++)
@@ -74,10 +210,16 @@ public:
                             }
                             else if(prev!=gc-48)
                             {
-                                string temp=grid[i][j];
-                                grid[i][j]=strremove(prev+48,temp);
-                                this->hits[gc-48]++;
-                                cout<<prev<<"was hit!"<<endl;
+                                if(cntrl==0)
+                                {
+                                    string temp=grid[i][j];
+                                    grid[i][j]=strremove(prev+48,temp);
+                                    this->hits[gc-48]++;
+                                    addtoken(prev);
+                                }
+                            //    cout<<prev<<"was hit!"<<endl;
+
+                                return prev;
                                 //prev(int) got hit!
                             }
                         }
@@ -86,6 +228,7 @@ public:
             }
 
         }
+        return -1;
     }
     void draw()
     {
@@ -116,6 +259,7 @@ public:
                         }
                         else
                         {
+
                             tokensprites[player].draw(x+padding[1]+((j)*45),y+padding[0]+((i)*45)-off);
                         }
                         off+=5;
@@ -175,10 +319,16 @@ public:
         return NULL;
 
     }
-    bool move(int p,int i,int j,int steps)
+    int* move(int p,int i,int j,int steps)
     {
+        int* arr=new int[3];
+        arr[0]=-1;
+        arr[1]=-1;
+        arr[2]=-1;
+
         if(grid[i][j].find(char(p+48),0)!= String::InvalidPos &&(grid[i][j][0]=='_' || grid[i][j][0]=='*' ||grid[i][j][0]=='-'))
         {
+            int left=steps;
             for(int k=0;k<steps;k++)
             {
                 //this->draw();
@@ -186,6 +336,7 @@ public:
                 if(!((i==6 && j==7)||(i==7 && j==6)||(i==7 && j==8)||(i==8 && j==7)))
                 {
                  //   cout<<"inside"<<endl;
+                    left--;
                     string temp=grid[i][j];
                     grid[i][j]=strremove(p+48,temp);
                     int h=0;
@@ -308,11 +459,15 @@ public:
                 }
             }
           //  cout<<"moved"<<endl;
-            return true;
+            int* arr=new int[3];
+            arr[0]=left;
+            arr[1]=i;
+            arr[2]=j;
+            return arr;
         }
         else
         {
-            return false;
+            return NULL;
         }
 
     }
