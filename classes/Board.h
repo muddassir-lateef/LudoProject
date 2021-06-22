@@ -11,7 +11,7 @@ class Board
     sf::Sprite* board;
     sf::Sprite* border;
     sf::RenderWindow* app;
-    int hits[4]={0,0,0,0};
+    int hits[4]={-11,0,0,0};
     Token tokensprites[4];
     string grid[15][15]={
           "#","#","#","#","#","#","_","_","_","#","#","#","#","#","#",
@@ -20,7 +20,7 @@ class Board
          "#","#","#3","#","#","#","_","-","_","#","#","#2","#","#","#",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
-         "_","*","_","_","_","_","&","&","&","_","_","_","_","_","_",
+         "_","*","_","_","_","_","&","&","&","_","_","_","_","_","_1",
           "_","-","-","-","-","-","&","&","&","-","-","-","-","-","_",
           "_","_","_","_","_","_","&","&","&","_","_","_","_","*","_",
           "#","#","#","#","#","#","_","-","_","#","#","#","#","#","#",
@@ -64,12 +64,31 @@ public:
     }
     void trace(int p,int i,int j,int steps)
     {
-
+      //  cout<<"Tracing"<<endl;
         int* arr=predict(p,i,j,steps);
+    //    cout<<"Tracing1"<<endl;
+
         if(arr!=NULL)
         {
-
-            egrid[arr[1]][arr[2]]=true;
+            for(int i1=0;i1<15;i1++)
+            {
+                for(int j1=0;j1<15;j1++)
+                {
+                    if(i1==arr[1] && j1==arr[2])
+                    {
+                        egrid[i1][j1]=true;
+                    }
+                    else
+                    {
+                        egrid[i1][j1]=false;
+                    }
+                    
+                }
+            }
+        }
+        else
+        {
+            this->clearw();
         }
         
     }
@@ -214,11 +233,18 @@ public:
                                 {
                                     string temp=grid[i][j];
                                     grid[i][j]=strremove(prev+48,temp);
-                                    this->hits[gc-48]++;
+                                    if(this->hits[gc-48-1]<=0)
+                                    this->hits[gc-48-1]++;
                                     addtoken(prev);
                                 }
-                            //    cout<<prev<<"was hit!"<<endl;
+                                //cout<<prev<<"was hit!"<<endl;
 
+
+                             //   cout<<"1:"<<hits[0]<<endl;
+                               // cout<<"2:"<<hits[1]<<endl;
+                                //cout<<"3:"<<hits[2]<<endl;
+
+                               // cout<<"4:"<<hits[3]<<endl;
                                 return prev;
                                 //prev(int) got hit!
                             }
@@ -234,6 +260,18 @@ public:
     {
         int padding[2]={9,5};
         app->draw(*board);
+        for(int i=0;i<15;i++)
+        {
+            for(int j=0;j<15;j++)
+            {
+                if(egrid[i][j]==true)
+                {
+                  border->setPosition(x+padding[1]+17+((j)*45), y+padding[0]+13+((i)*45));
+                  app->draw(*border);
+                }
+            }
+        }
+
         for(int i=0;i<15;i++)
         {
             for(int j=0;j<15;j++)
@@ -268,7 +306,6 @@ public:
                 }
             }
         }
-
     }
     void set(int xi,int yi)
     {
@@ -297,11 +334,11 @@ public:
            //     cout<<"x:"<<x<<" y:"<<y<<endl;
              //   cout<<"xs:"<<xs<<" xe:"<<xe<<endl;
                // cout<<"ys:"<<ys<<" ye:"<<ye<<endl;
-                 //   cout<<"i:"<<i<<"  j:"<<j<<endl;
+                  //  cout<<"i:"<<i<<"  j:"<<j<<endl;
 
                 if(x<=xe &&x>=xs && y<=ye &&y>=ys)
                 {
-                 //   cout<<"ffi:"<<i<<"  ffj:"<<j<<endl;
+                //    cout<<"ffi:"<<i<<"  ffj:"<<j<<endl;
 
                     int * corr=new int[2];
                     corr[0]=i;
@@ -361,11 +398,11 @@ public:
                     }
                     else if(j==7)
                     {
-                        if(i>-1 && i<6 && p==2 && hits[p-1]>0)
+                        if(i>-1 && i<6 && p==2 && hits[p-1]!=0)
                         {
                             v=-1;
                         }
-                        else if(i>8 && i<15 && p==4 && hits[p-1]>0)
+                        else if(i>8 && i<15 && p==4 && hits[p-1]!=0)
                         {
                             v=1;
                         }
@@ -416,11 +453,11 @@ public:
                     }
                     else if(i==7)
                     {
-                        if(j>-1 && j<6 && p==3 && hits[p-1]>0)
+                        if(j>-1 && j<6 && p==3 && hits[p-1]!=0)
                         {
                             h=1;
                         }
-                        else if(j>8 && j<15 && p==1 && hits[p-1]>0)
+                        else if(j>8 && j<15 && p==1 && hits[p-1]!=0)
                         {
                             h=-1;
                         }
@@ -475,6 +512,5 @@ public:
 
 
 };
-
 
 #endif

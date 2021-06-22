@@ -98,6 +98,16 @@ int dice::roll_Dice(int type, RenderWindow& app){
   srand(time(0)); //seeding
   //vector<int> roll_values;  //return list 
   int value = (rand()%6)+1; //value=6;
+sf::SoundBuffer* buffer=new SoundBuffer;
+// load something into the sound buffer...
+if (!buffer->loadFromFile("audio/Dice_Roll/dice roll.wav"))
+{
+    cout<<"was not loaded!"<<endl;
+}
+sf::Sound* sound=new Sound;;
+sound->setBuffer(*buffer);
+sound->setVolume(100);
+sound->play();
   //cout<<value<<endl;
   face = value;
   //roll_values.push_back(value); //adding to the list of generated values

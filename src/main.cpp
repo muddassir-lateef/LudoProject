@@ -51,6 +51,7 @@ struct threadDesc
 void*player(void*arg)
 {
   threadDesc* p=((threadDesc*)arg);
+ 
   sem_wait (&sdie) ;
 
 // in button of die roll if(roll finsihed) {sdierollpost}else {roll}
@@ -68,9 +69,20 @@ void*player(void*arg)
   currp=p->player;
   sem_wait(&sdieused);
   currp=0;
+  sf::SoundBuffer* buffer=new SoundBuffer;
+  // load something into the sound buffer...
+  if (!buffer->loadFromFile("audio/Opp_turn/opp turn.wav"))
+  {
+      cout<<"was not loaded!"<<endl;
+  }
+  sf::Sound* sound=new Sound;;
+  sound->setBuffer(*buffer);
+  sound->setVolume(100);
+  sound->play();
+
   sem_post(&sboard);
 
-
+  pthread_exit(NULL);
 
 }
 void*mantain(void *arg)
@@ -81,8 +93,8 @@ void*mantain(void *arg)
   while(td->app->isOpen())
   {
         won= td->board->won();
-    sem_wait (&assisstant) ;
-    td->board->hit();
+        sem_wait (&assisstant) ;
+        td->board->hit();
         won= td->board->won();
 
   }
@@ -99,7 +111,7 @@ void*master(void *arg)
   pthread_t assisstant;
   threadDesc* td=(threadDesc*)arg;
 
-  pthread_create(&assisstant,NULL,&mantain ,td);		
+  pthread_create(&assisstant,NULL,&mantain ,td);  //hit or won		
 
   threadDesc* tds=new threadDesc[4];
   for(int i=0;i<4;i++)
@@ -113,7 +125,7 @@ void*master(void *arg)
   pthread_t tok[4];
   while(td->app->isOpen())
   {
-    
+
     for(int i=0;i<4;i++)
     {
       pthread_create(&tok[i],NULL,&player ,&tds[i]);		
@@ -155,11 +167,11 @@ int main()
     Texture dice_texture;
     dice_texture.loadFromFile("images/dice/dices6.png");
     Texture border;
-    border.loadFromFile("images/tokens/border.jpeg");
+    border.loadFromFile("images/tokens/border.jpg");
     Sprite borders(border);
     dice Dice(750,600,dice_texture);
     music.play();
-    music.setVolume(1);
+    music.setVolume(10);
     
     // Loading textures
     Texture t[5];
@@ -192,12 +204,29 @@ int main()
       {
           if (e.type == Event::Closed)
             app.close();
-                   
+          if(e.type==Event::MouseMoved)
+          {
+                int* arr=board.selectgrid(Mouse::getPosition().x,Mouse::getPosition().y);
+                  if(currp!=0 && arr!=NULL && !Dice.player[currp-1].empty() )
+                  {
+                      for (int i=0; i<Dice.player[currp-1].size(); i++){cout<<Dice.player[currp-1][i]<<" ";}
+                      cout<<endl;
+
+//                    cout<<"at least got in"<<endl;
+                    int s=Dice.player[currp-1].size();
+  //                                    cout<<"at least got in1"<<endl;
+    //                cout<<"s:"<<s<<endl;
+                    int roller=Dice.player[currp-1][s-1];
+               //     Dice.player[currp-1].pop_back();
+      //                                cout<<"at least got in2"<<endl;
+                    board.trace(currp,arr[0],arr[1],roller);
+                  }
+          }         
           if (e.type == Event::MouseButtonPressed)
             if (e.key.code == Mouse::Left)
             {
                 int* arr=board.selectgrid(Mouse::getPosition().x,Mouse::getPosition().y);
-            //    cout<<"curr p:"<<currp<<" i:"<<arr[0]<<" j:"<<arr[1]<<endl;
+//                cout<<"curr p:"<<currp<<" i:"<<arr[0]<<" j:"<<arr[1]<<endl;
                   if(currp!=0 && arr!=NULL && !Dice.player[currp-1].empty() )
                   {
 
@@ -220,6 +249,17 @@ int main()
                     }
                     else
                     {
+                      sf::SoundBuffer* buffer=new SoundBuffer;
+                      // load something into the sound buffer...
+                      if (!buffer->loadFromFile("audio/token_move/token move.wav"))
+                      {
+                          cout<<"was not loaded!"<<endl;
+                      }
+                      sf::Sound* sound=new Sound;;
+                      sound->setBuffer(*buffer);
+                      sound->setVolume(100);
+                      sound->play();
+
                       Dice.player[currp-1].pop_back();
                       board.move(currp,arr[0],arr[1],roller);
                       cout<<"It will move to i:"<<pre[1]<<" j:"<<pre[2]<<" and hit:"<<pre[0]<<endl;
