@@ -182,7 +182,7 @@ public:
             if(mv[0]==0)
             {
                 arr[0]=hit(1);
-                hits[p-1]--;
+          //      hits[p-1]--;
                 arr[1]=mv[1];
                 arr[2]=mv[2];
             }
@@ -237,14 +237,9 @@ public:
                                     this->hits[gc-48-1]++;
                                     addtoken(prev);
                                 }
-                                //cout<<prev<<"was hit!"<<endl;
+                                cout<<prev<<"was hit!"<<endl;
 
 
-                             //   cout<<"1:"<<hits[0]<<endl;
-                               // cout<<"2:"<<hits[1]<<endl;
-                                //cout<<"3:"<<hits[2]<<endl;
-
-                               // cout<<"4:"<<hits[3]<<endl;
                                 return prev;
                                 //prev(int) got hit!
                             }
@@ -258,6 +253,12 @@ public:
     }
     void draw()
     {
+                                        cout<<"1:"<<hits[0]<<endl;
+                                cout<<"2:"<<hits[1]<<endl;
+                                cout<<"3:"<<hits[2]<<endl;
+
+                               cout<<"4:"<<hits[3]<<endl;
+
         int padding[2]={9,5};
         app->draw(*board);
         for(int i=0;i<15;i++)
