@@ -117,7 +117,7 @@ sound->play();
 
 void dice::animate_roll(int result, RenderWindow& app){
   if (rolling == true){ 
-    opacity -= 10;
+    opacity -= 5;
     Dice.setColor(Color(255,255,255,opacity));
    // Dice.setScale(1.01f,1.01f);
     if (opacity < 0){

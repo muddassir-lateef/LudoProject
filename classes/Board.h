@@ -368,7 +368,7 @@ public:
             int left=steps;
             for(int k=0;k<steps;k++)
             {
-                //this->draw();
+
                // cout<<"fidning "<<p<<" from "<<grid[i][j]<<endl;
                 if(!((i==6 && j==7)||(i==7 && j==6)||(i==7 && j==8)||(i==8 && j==7)))
                 {
